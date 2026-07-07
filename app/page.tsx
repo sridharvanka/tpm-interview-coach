@@ -105,10 +105,20 @@ export default function Home() {
   return (
     <>
       <div className="grid-background" />
-      <header className="relative z-10 border-b border-[var(--line-soft)] bg-[rgba(244,241,232,0.78)] backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[var(--line-soft)] bg-[rgba(244,241,232,0.85)] backdrop-blur-md">
         <nav className="max-w-5xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between gap-4">
-          <a href="https://sridharvanka.me" className="text-sm font-extrabold tracking-[0.08em]">SRIDHAR VANKA</a>
-          <span className="mono-label text-[var(--ink-muted)]">Leadership practice lab</span>
+          <a href="https://sridharvanka.me" className="text-sm font-extrabold tracking-[0.08em] hover:opacity-80 transition-opacity">SRIDHAR VANKA</a>
+          <div className="flex items-center gap-4">
+            {state.phase === "results" && (
+              <button
+                onClick={() => setState(initialState)}
+                className="text-xs font-bold text-[var(--accent-ink)] border border-[rgba(14,138,110,0.3)] bg-[#e7f0ec] px-3.5 py-1.5 rounded-full hover:bg-[rgba(14,138,110,0.25)] transition-colors cursor-pointer"
+              >
+                ← Start another review
+              </button>
+            )}
+            <span className="mono-label text-[var(--ink-muted)]">Leadership practice lab</span>
+          </div>
         </nav>
       </header>
 
@@ -119,17 +129,27 @@ export default function Home() {
           <p className="text-base md:text-lg text-[var(--ink-muted)] mt-5 leading-relaxed max-w-2xl">Record a high-stakes answer and get a direct read on delivery, structure, seniority signal, and the communication moves that would make it sharper.</p>
         </header>
 
-        <div className="flex items-center gap-3 mb-5" aria-label={`Step ${currentStep + 1} of 3`}>
-          {["Scenario", "Analyze", "Coach"].map((label, index) => {
-            const active = index <= currentStep;
-            return (
-              <div key={label} className="flex items-center gap-2">
-                <span className={`w-6 h-6 rounded-full grid place-items-center text-xs font-bold border ${active ? "bg-[var(--accent)] border-[var(--accent)] text-white" : "bg-[var(--surface)] border-[var(--line)] text-[var(--ink-faint)]"}`}>{index + 1}</span>
-                <span className={`hidden sm:inline text-xs font-semibold ${active ? "text-[var(--ink)]" : "text-[var(--ink-faint)]"}`}>{label}</span>
-                {index < 2 && <span className="w-5 md:w-10 h-px bg-[var(--line)] mx-1" />}
-              </div>
-            );
-          })}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
+          <div className="flex items-center gap-3" aria-label={`Step ${currentStep + 1} of 3`}>
+            {["Scenario", "Analyze", "Coach"].map((label, index) => {
+              const active = index <= currentStep;
+              return (
+                <div key={label} className="flex items-center gap-2">
+                  <span className={`w-6 h-6 rounded-full grid place-items-center text-xs font-bold border ${active ? "bg-[var(--accent)] border-[var(--accent)] text-white" : "bg-[var(--surface)] border-[var(--line)] text-[var(--ink-faint)]"}`}>{index + 1}</span>
+                  <span className={`hidden sm:inline text-xs font-semibold ${active ? "text-[var(--ink)]" : "text-[var(--ink-faint)]"}`}>{label}</span>
+                  {index < 2 && <span className="w-5 md:w-10 h-px bg-[var(--line)] mx-1" />}
+                </div>
+              );
+            })}
+          </div>
+          {state.phase === "results" && (
+            <button
+              onClick={() => setState(initialState)}
+              className="text-xs font-bold text-[var(--accent-ink)] border border-[rgba(14,138,110,0.3)] bg-[#e7f0ec] px-3.5 py-1.5 rounded-full hover:bg-[rgba(14,138,110,0.25)] transition-colors cursor-pointer"
+            >
+              ← Start another review
+            </button>
+          )}
         </div>
 
         {state.error && <div role="alert" className="mb-6 p-4 rounded-xl border status-bad text-sm">{state.error}</div>}
